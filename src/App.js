@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { fetchTasksThunk } from './actions';
 
-function App() {
+function App({ tasksState, fetchTasksThunk }) {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button type="button" onClick={() => fetchTasksThunk()}>Buscar Tasks</button>
+      <ol>
+        {tasksState.tasks.map(task => (
+          <li key={task.id}>{task.name}</li>
+        ))}
+      </ol>
+    {tasksState.errorMessage && <span>{tasksState.errorMessage}</span>}
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  tasksState: state.fetchTasksReducer,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  fetchTasksThunk,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
