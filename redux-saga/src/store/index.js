@@ -1,8 +1,13 @@
 import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
 
 import reducers from '../reducers';
+import { watchFetchTasksSaga } from '../sagas';
 
-const store = createStore(reducers, applyMiddleware(thunk));
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(reducers, applyMiddleware(sagaMiddleware));
+
+sagaMiddleware.run(watchFetchTasksSaga);
 
 export default store;

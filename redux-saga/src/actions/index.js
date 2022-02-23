@@ -17,28 +17,3 @@ export function fetchTasksError(errorMessage) {
     payload: errorMessage,
   };
 }
-
-export const fetchTasksThunk = () => async (dispatch) => {
-  dispatch(fetchTasksStarted());
-
-  try {
-    let tasks = [];
-
-    if (Math.round(Math.random() * 10) % 2 === 0) {
-      const response = await fetch('https://tasks.com');
-      tasks = response.json();
-
-      dispatch(fetchTasksSuccess(tasks));
-    } else {
-      tasks = [
-        { id: 1, name: 'Task #01' },
-        { id: 2, name: 'Task #02' },
-        { id: 3, name: 'Task #03' },
-      ];
-    }
-
-    dispatch(fetchTasksSuccess(tasks));
-  } catch(error) {
-    dispatch(fetchTasksError(error.message));
-  }
-}
